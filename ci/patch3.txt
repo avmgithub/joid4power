@@ -1,0 +1,11 @@
+--- engine.py.ORG	2016-01-27 13:56:37.993586218 -0600
++++ engine.py	2016-01-27 13:59:16.301621028 -0600
+@@ -85,7 +85,7 @@
+         """
+         node = {
+             'name': juju_domain.name,
+-            'architecture': 'amd64/generic',
++            'architecture': 'ppc64el',
+             'mac_addresses': [x for x in juju_domain.mac_addresses],
+             'tags': 'bootstrap'
+         }
