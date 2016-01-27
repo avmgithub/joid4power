@@ -1,0 +1,12 @@
+virsh shutdown opnfv-maas
+virsh shutdown bootstrap
+virsh shutdown node1-control
+virsh shutdown node2-compute
+
+virsh undefine opnfv-maas
+virsh undefine bootstrap
+virsh undefine node1-control
+virsh undefine node2-compute
+
+rm /var/lib/libvirt/images/*
+rm maas_deployer.log my.log

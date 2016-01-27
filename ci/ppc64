@@ -1,0 +1,35 @@
+#!/bin/bash 
+#set -x
+
+maas maas boot-source-selection update 1 1 os=ubuntu release=trusty arches=ppc64el arches=amd64 subarches=hwe-t subarches=hwe-u subarches=hwe-v subarches=hwe-w 'labels=*'
+
+sleep 5
+
+maas maas boot-resources import
+# get the value of id
+id="$(maas maas boot-sources read | python -c 'import json,sys;obj=json.load(sys.stdin);print obj[0]["id"]')"
+
+# make sure we have ppc64 for boot source selections
+#maas maas boot-source-selections read $id | grep ppc64
+
+# find which has ppc64 boot selection
+num_sources="$(maas maas boot-resources read | python -c 'import json,sys;obj=json.load(sys.stdin);print len(obj[0])')"
+
+#echo $num_sources
+let num_sources=$num_sources+1
+#echo  $num_sources
+for i in `seq 1 $num_sources`
+do
+    maas maas boot-resource read $i | grep ppc64 > /dev/null
+    if [ $? -eq 0 ]
+    then
+	while true; do
+            maas maas boot-resource read $i  | grep complete | grep false> /dev/null
+            if [ $? -eq 1 ]; then
+                break
+            fi
+            sleep 2
+            echo -n "."
+        done
+    fi
+done 
