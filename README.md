@@ -31,16 +31,20 @@ patch2.txt and patch3.txt
 
 They have to be applied to the following files:
 
-* /usr/lib/python2.7/dist-packages/maas_deployer/vmaas/vm.py 
-* /usr/lib/python2.7/dist-packages/maas_deployer/vmaas/engine.py 
-* /usr/lib/python2.7/dist-packages/maas_deployer/vmaas/templates/cloud-init.cfg
-
-* cp patch1.txt /usr/lib/python2.7/dist-packages/maas_deployer/vmaas
-* cp patch3.txt /usr/lib/python2.7/dist-packages/maas_deployer/vmaas
-* cp patch2.txt /usr/lib/python2.7/dist-packages/maas_deployer/vmaas/templates
-
-* cd /usr/lib/python2.7/dist-packages/maas_deployer/vmaas
-* patch < patch1.txt
-* patch < patch3.txt
-* cd /usr/lib/python2.7/dist-packages/maas_deployer/vmaas/templates
-* patch < patch2.txt
+```
+/usr/lib/python2.7/dist-packages/maas_deployer/vmaas/vm.py 
+/usr/lib/python2.7/dist-packages/maas_deployer/vmaas/engine.py 
+/usr/lib/python2.7/dist-packages/maas_deployer/vmaas/templates/cloud-init.cfg
+```
+```
+cp patch1.txt /usr/lib/python2.7/dist-packages/maas_deployer/vmaas
+cp patch3.txt /usr/lib/python2.7/dist-packages/maas_deployer/vmaas
+cp patch2.txt /usr/lib/python2.7/dist-packages/maas_deployer/vmaas/templates
+```
+```
+cd /usr/lib/python2.7/dist-packages/maas_deployer/vmaas
+patch < patch1.txt
+patch < patch3.txt
+cd /usr/lib/python2.7/dist-packages/maas_deployer/vmaas/templates
+patch < patch2.txt
+```
