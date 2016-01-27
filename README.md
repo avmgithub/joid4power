@@ -26,11 +26,13 @@ Run the command
 ./02-maasdeploy.sh  virtinstall 2>&1 |tee my.log
 
 You may get some errors on your first run because some files for the 
-maas-deployer package may not have been patched yet.  See patch1.txt
-and patch2.txt.  The have to be applied to the following files:
+maas-deployer package may not have been patched yet.  See patch1.txt,
+patch2.txt and patch3.txt
+
+They have to be applied to the following files:
 
 /usr/lib/python2.7/dist-packages/maas_deployer/vmaas/vm.py 
-/usr/lib/python2.7/dist-packages/maas_deployer/vmaas/engine.py
+/usr/lib/python2.7/dist-packages/maas_deployer/vmaas/engine.py 
 /usr/lib/python2.7/dist-packages/maas_deployer/vmaas/templates/cloud-init.cfg
 
 cp patch1.txt /usr/lib/python2.7/dist-packages/maas_deployer/vmaas
