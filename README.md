@@ -48,3 +48,4 @@ patch < patch3.txt
 cd /usr/lib/python2.7/dist-packages/maas_deployer/vmaas/templates
 patch < patch2.txt
 ```
+Before re-running the 02-maasdeploy.sh script, run the ./cleanup script
