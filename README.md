@@ -4,7 +4,7 @@
 This is the OPNFV project for OpenPOWER. We will be using JOID from OPNFV.
 For reference see https://wiki.opnfv.org/joid/get_started
 
-This document is still work in progress. Please be patient
+**This document is still work in progress. Please be patient**
 
 Requirements:
 Ubuntu 14.04 ppc64el
