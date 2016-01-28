@@ -5,6 +5,11 @@ set -ex
 arch=$(uname -m)
 virtinstall=0
 
+if [ ${arch} == 'ppc64le' ];
+then
+    ppc64_cpu --smt=off
+fi
+
 case "$1" in
     'intelpod5' )
         cp maas/intel/pod5/deployment.yaml ./deployment.yaml
@@ -193,6 +198,11 @@ case "$1" in
     'juniperpod1' )
         ;;
 esac
+
+if [ ${arch} == 'ppc64le' ];
+then
+    ./update_maas_ppc64
+fi
 
 echo " .... MAAS deployment finished successfully ...."
 
