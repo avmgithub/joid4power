@@ -1,10 +1,10 @@
 # joid4power
-OPNFV Joid project for IBM OpenPOWER architecture
+<H2>OPNFV Joid project for IBM OpenPOWER architecture</H2>
 
 This is the OPNFV project for OpenPOWER. We will be using JOID from OPNFV.
 For reference see https://wiki.opnfv.org/joid/get_started
 
-This document is still work in progress. Please be patient
+**This document is still work in progress. Please be patient**
 
 Requirements:
 Ubuntu 14.04 ppc64el
@@ -31,16 +31,21 @@ patch2.txt and patch3.txt
 
 They have to be applied to the following files:
 
+```
 /usr/lib/python2.7/dist-packages/maas_deployer/vmaas/vm.py 
 /usr/lib/python2.7/dist-packages/maas_deployer/vmaas/engine.py 
 /usr/lib/python2.7/dist-packages/maas_deployer/vmaas/templates/cloud-init.cfg
-
+```
+```
 cp patch1.txt /usr/lib/python2.7/dist-packages/maas_deployer/vmaas
 cp patch3.txt /usr/lib/python2.7/dist-packages/maas_deployer/vmaas
 cp patch2.txt /usr/lib/python2.7/dist-packages/maas_deployer/vmaas/templates
-
+```
+```
 cd /usr/lib/python2.7/dist-packages/maas_deployer/vmaas
 patch < patch1.txt
 patch < patch3.txt
 cd /usr/lib/python2.7/dist-packages/maas_deployer/vmaas/templates
 patch < patch2.txt
+```
+Before re-running the 02-maasdeploy.sh script, run the ./cleanup script
