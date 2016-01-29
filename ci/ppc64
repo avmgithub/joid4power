@@ -3,7 +3,7 @@
 
 maas maas boot-source-selection update 1 1 os=ubuntu release=trusty arches=ppc64el arches=amd64 subarches=hwe-v subarches=hwe-w 'labels=*'
 
-sleep 5
+sleep 10
 
 maas maas boot-resources import
 # get the value of id
