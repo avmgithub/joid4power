@@ -1,6 +1,6 @@
 #!/bin/bash
 #placeholder for deployment script.
-set -ex
+set -x
 
 arch=$(uname -m)
 virtinstall=0
@@ -8,6 +8,7 @@ virtinstall=0
 if [ ${arch} == 'ppc64le' ];
 then
     ppc64_cpu --smt=off
+
     virsh destroy opnfv-maas
     virsh undefine opnfv-maas
 
