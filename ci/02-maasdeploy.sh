@@ -8,18 +8,7 @@ virtinstall=0
 if [ ${arch} == 'ppc64le' ];
 then
     ppc64_cpu --smt=off
-
-    virsh destroy opnfv-maas
-    virsh undefine opnfv-maas
-
-    virsh destroy bootstrap
-    virsh undefine bootstrap
-
-    virsh destroy node1-control
-    virsh undefine node1-control
-
-    virsh destroy node2-compute
-    virsh destroy node2-compute 
+    ./cleanvm.sh
 fi
 
 case "$1" in
