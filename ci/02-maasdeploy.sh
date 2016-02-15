@@ -140,6 +140,15 @@ sudo chown $USER:$USER environments.yaml
 
 echo "... Deployment of maas finish ...."
 
+if [ ${arch} == 'ppc64le' ];
+then
+    echo "...Patching maas for POWER ...."
+    ./install_curtin_packages
+    scp -r -i /root/.ssh/id_maas -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no  maasserver_patches ubuntu@192.168.122.2:/tmp
+    ssh -i /root/.ssh/id_maas -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ubuntu@192.168.122.2 "cd /tmp/maasserver_patches; sudo ./maasserver_patches.sh"
+fi
+
+
 maas_ip=`grep " ip_address" deployment.yaml | cut -d " "  -f 10`
 apikey=`grep maas-oauth: environments.yaml | cut -d "'" -f 2`
 maas login maas http://${maas_ip}/MAAS/api/1.0 ${apikey}
