@@ -1,0 +1,11 @@
+--- powerkvm.py.ORG	2016-02-15 17:50:57.999489616 +0000
++++ powerkvm.py	2016-02-15 17:51:53.100270215 +0000
+@@ -41,7 +41,7 @@
+ class PowerKVMBootMethod(BootMethod):
+ 
+     name = "powerkvm"
+-    bios_boot_method = "pxe"
++    bios_boot_method = "powerkvm"
+     template_subdir = None
+     bootloader_path = "bootppc64.bin"
+     bootloader_arches = ['ppc64el']
