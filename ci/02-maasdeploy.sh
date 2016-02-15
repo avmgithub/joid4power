@@ -78,6 +78,13 @@ sudo apt-add-repository ppa:maas-deployers/stable -y
 sudo apt-add-repository ppa:juju/stable -y
 sudo apt-add-repository ppa:maas/stable -y
 sudo apt-get update -y
+
+if [ ${arch} == 'ppc64le' ];
+then
+   sudo apt-get install maas-deployer=0.0.5-0ubuntu0
+   ./apply_maas_patch.sh
+fi
+
 sudo apt-get install openssh-server git maas-deployer juju juju-deployer maas-cli python-pip -y
 sudo pip install shyaml
 juju init -f
