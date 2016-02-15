@@ -81,11 +81,13 @@ sudo apt-get update -y
 
 if [ ${arch} == 'ppc64le' ];
 then
-   sudo apt-get install maas-deployer=0.0.5-0ubuntu0
-   ./apply_maas_patch.sh
+    sudo apt-get install maas-deployer=0.0.5-0ubuntu0 -y
+    ./apply_maas_patch.sh
+    sudo apt-get install openssh-server git juju juju-deployer maas-cli python-pip -y
+else
+    sudo apt-get install openssh-server git maas-deployer juju juju-deployer maas-cli python-pip -y
 fi
 
-sudo apt-get install openssh-server git maas-deployer juju juju-deployer maas-cli python-pip -y
 sudo pip install shyaml
 juju init -f
 
