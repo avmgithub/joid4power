@@ -160,7 +160,10 @@ maas maas sshkeys new key="`cat $HOME/.ssh/id_rsa.pub`"
 
 if [ ${arch} == 'ppc64le' ];
 then
+   ssh -i /root/.ssh/id_maas -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ubuntu@192.168.122.2 "sudo service maas-regiond restart; sudo service maas-clusterd restart"
+   sleep 15
    ./ppc64
+   ./wait4images.py
 fi
 
 #adding compute and control nodes VM to MAAS for deployment purpose.
