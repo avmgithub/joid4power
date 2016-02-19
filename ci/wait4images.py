@@ -33,7 +33,7 @@ def main():
 
         user="ubuntu"
         password="ubuntu"
-        ip_addr="172.29.161.216"
+        ip_addr="192.168.122.2"
 
         handler.setLevel(logging.DEBUG)
         checker = bootimages.ImageImportChecker(host=ip_addr,

@@ -143,9 +143,10 @@ echo "... Deployment of maas finish ...."
 if [ ${arch} == 'ppc64le' ];
 then
     echo "...Patching maas for POWER ...."
-    ./install_curtin_packages
-    scp -r -i /root/.ssh/id_maas -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no  maasserver_patches ubuntu@192.168.122.2:/tmp
-    ssh -i /root/.ssh/id_maas -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ubuntu@192.168.122.2 "cd /tmp/maasserver_patches; sudo ./maasserver_patches.sh"
+    maas_ip=`grep " ip_address" deployment.yaml | cut -d " "  -f 10`
+    ./install_curtin_packages ${maas_ip}
+    scp -r -i /root/.ssh/id_maas -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no  maasserver_patches ubuntu@${maas_ip}:/tmp
+    ssh -i /root/.ssh/id_maas -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ubuntu@${maas_ip} "cd /tmp/maasserver_patches; sudo ./maasserver_patches.sh"
 fi
 
 
@@ -160,7 +161,8 @@ maas maas sshkeys new key="`cat $HOME/.ssh/id_rsa.pub`"
 
 if [ ${arch} == 'ppc64le' ];
 then
-   ssh -i /root/.ssh/id_maas -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ubuntu@192.168.122.2 "sudo service maas-regiond restart; sudo service maas-clusterd restart"
+   maas_ip=`grep " ip_address" deployment.yaml | cut -d " "  -f 10`
+   ssh -i /root/.ssh/id_maas -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ubuntu@${maas_ip} "sudo service maas-regiond restart; sudo service maas-clusterd restart"
    sleep 15
    ./ppc64
    ./wait4images.py
