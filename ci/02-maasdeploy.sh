@@ -163,7 +163,7 @@ if [ ${arch} == 'ppc64le' ];
 then
    maas_ip=`grep " ip_address" deployment.yaml | cut -d " "  -f 10`
    ssh -i /root/.ssh/id_maas -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ubuntu@${maas_ip} "sudo service maas-regiond restart; sudo service maas-clusterd restart"
-   sleep 15
+   sleep 30
    ./ppc64
    ./wait4images.py
 fi
