@@ -163,7 +163,7 @@ if [ ${arch} == 'ppc64le' ];
 then
    maas_ip=`grep " ip_address" deployment.yaml | cut -d " "  -f 10`
    ssh -i /root/.ssh/id_maas -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ubuntu@${maas_ip} "sudo service maas-regiond restart; sudo service maas-clusterd restart"
-   sleep 30
+   sleep 60
    ./ppc64
    ./wait4images.py
 fi
@@ -171,9 +171,9 @@ fi
 #adding compute and control nodes VM to MAAS for deployment purpose.
 if [ "$virtinstall" -eq 1 ]; then
     # create two more VMs to do the deployment.
-    sudo virt-install --connect qemu:///system --name node1-control --ram 8192 --vcpus 4 --video vga --arch ppc64 --disk size=120,format=qcow2,bus=virtio,io=native,pool=default --network bridge=virbr0,model=virtio --network bridge=virbr0,model=virtio --boot network,hd,menu=off --noautoconsole --vnc --print-xml | tee node1-control
+    sudo virt-install --connect qemu:///system --name node1-control --ram 8192 --vcpus 8,maxvcpus=8,sockets=1,cores=1,threads=8 --cpuset=120 --video vga --arch ppc64 --disk size=120,format=qcow2,bus=virtio,io=native,pool=default --network bridge=brInt,model=virtio --network bridge=virbr0,model=virtio --boot network,hd,menu=off --noautoconsole --vnc --print-xml | tee node1-control
 
-    sudo virt-install --connect qemu:///system --name node2-compute --ram 8192 --vcpus 4 --video vga --arch ppc64 --disk size=120,format=qcow2,bus=virtio,io=native,pool=default --network bridge=virbr0,model=virtio --network bridge=virbr0,model=virtio --boot network,hd,menu=off --noautoconsole --vnc --print-xml | tee node2-compute
+    sudo virt-install --connect qemu:///system --name node2-compute --ram 8192 --vcpus 8,maxvcpus=8,sockets=1,cores=1,threads=8 --cpuset=128 --video vga --arch ppc64 --disk size=120,format=qcow2,bus=virtio,io=native,pool=default --network bridge=brInt,model=virtio --network bridge=virbr0,model=virtio --boot network,hd,menu=off --noautoconsole --vnc --print-xml | tee node2-compute
 
     node1controlmac=`grep  "mac address" node1-control | head -1 | cut -d "'" -f 2`
     node2computemac=`grep  "mac address" node2-compute | head -1 | cut -d "'" -f 2`
@@ -184,11 +184,11 @@ if [ "$virtinstall" -eq 1 ]; then
     maas maas tags new name='control'
     maas maas tags new name='compute'
 
-    controlnodeid=`maas maas nodes new autodetect_nodegroup='yes' name='node1-control' tags='control' hostname='node1-control' power_type='virsh' mac_addresses=$node1controlmac power_parameters_power_address='qemu+ssh://'$USER'@192.168.122.1/system' architecture='ppc64el' power_parameters_power_id='node1-control' | grep system_id | cut -d '"' -f 4 `
+    controlnodeid=`maas maas nodes new autodetect_nodegroup='yes' name='node1-control' tags='control' hostname='node1-control' power_type='virsh' mac_addresses=$node1controlmac power_parameters_power_address='qemu+ssh://'$USER'@10.0.43.217/system' architecture='ppc64el' power_parameters_power_id='node1-control' | grep system_id | cut -d '"' -f 4 `
 
     maas maas tag update-nodes control add=$controlnodeid
 
-    computenodeid=`maas maas nodes new autodetect_nodegroup='yes' name='node2-compute' tags='compute' hostname='node2-compute' power_type='virsh' mac_addresses=$node2computemac power_parameters_power_address='qemu+ssh://'$USER'@192.168.122.1/system' architecture='ppc64el' power_parameters_power_id='node2-compute' | grep system_id | cut -d '"' -f 4 `
+    computenodeid=`maas maas nodes new autodetect_nodegroup='yes' name='node2-compute' tags='compute' hostname='node2-compute' power_type='virsh' mac_addresses=$node2computemac power_parameters_power_address='qemu+ssh://'$USER'@10.0.43.217/system' architecture='ppc64el' power_parameters_power_id='node2-compute' | grep system_id | cut -d '"' -f 4 `
 
     maas maas tag update-nodes compute add=$computenodeid
 
@@ -225,7 +225,8 @@ esac
 
 if [ ${arch} == 'ppc64le' ];
 then
-    ./update_maas_ppc64
+    maas_ip=`grep " ip_address" deployment.yaml | cut -d " "  -f 10`
+    ./update_maas_ppc64 ${maas_ip}
 fi
 
 echo " .... MAAS deployment finished successfully ...."

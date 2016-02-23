@@ -3,8 +3,8 @@
 import logging
 import sys
 import time
-
-
+import yaml
+import os
 
 from maas_deployer.vmaas import (
     vm,
@@ -30,10 +30,36 @@ handler = logging.StreamHandler()
 
 
 def main():
+        
+        cfg.parser.add_argument('-c', '--config', type=str,
+                            default='deployment.yaml', required=False)
+        cfg.parser.add_argument('target', metavar='target', type=str, nargs='?',
+                            help='Target environment to run')
 
-        user="ubuntu"
-        password="ubuntu"
-        ip_addr="192.168.122.2"
+        cfg.parse_args()
+        if not os.path.isfile(cfg.config):
+            log.error("Unable to find config file %s", cfg.config)
+            sys.exit(1)
+
+        with open(cfg.config, 'r') as fd:
+            config = yaml.safe_load(fd)
+
+        target = cfg.target
+
+        if target is None and len(config.keys()) == 1:
+            target = config.keys()[0]
+
+        if target not in config:
+            log.error("Unable to find target: %s", target)
+            sys.exit(2)
+
+        config1 = config.get(target)
+
+        maas_config = config1.get('maas')
+
+        user = maas_config['user']
+        password = maas_config['password']
+        ip_addr = maas_config['ip_address']
 
         handler.setLevel(logging.DEBUG)
         checker = bootimages.ImageImportChecker(host=ip_addr,

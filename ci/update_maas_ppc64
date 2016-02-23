@@ -6,7 +6,7 @@
 virsh dumpxml bootstrap >bootstrap.xml
 bootstrapmac=`grep  "mac address" bootstrap.xml | head -1 | cut -d "'" -f 2`
 
-bootstrapid=`maas maas nodes new autodetect_nodegroup='yes' name='bootstrap' tags='bootstrap' hostname='bootstrap' power_type='virsh' mac_addresses=$bootstrapmac power_parameters_power_address='qemu+ssh://root@192.168.122.1/system' architecture='ppc64el' power_parameters_power_id='bootstrap' | grep system_id | cut -d '"' -f 4 `
+bootstrapid=`maas maas nodes new autodetect_nodegroup='yes' name='bootstrap' tags='bootstrap' hostname='bootstrap' power_type='virsh' mac_addresses=$bootstrapmac power_parameters_power_address='qemu+ssh://root@$1/system' architecture='ppc64el' power_parameters_power_id='bootstrap' | grep system_id | cut -d '"' -f 4 `
 
 maas maas tag update-nodes bootstrap add=$bootstrapid
 
@@ -18,6 +18,6 @@ do
 	node_name=`maas maas node read $i | grep hostname |  awk '{print $2}' | sed  -e 's/,$//' -e 's/^"//'  -e 's/"$//' | awk -F "." '{print $1}'`
 	echo $i $node_name
 
-	 maas maas node update $i power_parameters_power_pass=passw0rd power_parameters_power_address="qemu+ssh://root@192.168.122.1/system" power_parameters_power_id=$node_name
+	 maas maas node update $i power_parameters_power_pass=passw0rd power_parameters_power_address="qemu+ssh://root@$1/system" power_parameters_power_id=$node_name
 done
 
