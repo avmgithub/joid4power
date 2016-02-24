@@ -226,7 +226,8 @@ esac
 if [ ${arch} == 'ppc64le' ];
 then
     maas_ip=`grep " ip_address" deployment.yaml | cut -d " "  -f 10`
-    ./update_maas_ppc64 ${maas_ip}
+    qemu_uri=`grep qemu deployment.yaml  | awk '{print $2}'`
+    ./update_maas_ppc64 ${qemu_uri}
 fi
 
 echo " .... MAAS deployment finished successfully ...."
