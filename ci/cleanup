@@ -10,3 +10,4 @@ virsh undefine node2-compute
 
 rm /var/lib/libvirt/images/*
 rm maas_deployer.log my.log
+rm /root/.ssh/known_hosts
