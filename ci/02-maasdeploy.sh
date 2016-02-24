@@ -166,6 +166,7 @@ then
    sleep 60
    ./ppc64
    ./wait4images.py
+   sleep 60
 fi
 
 #adding compute and control nodes VM to MAAS for deployment purpose.
