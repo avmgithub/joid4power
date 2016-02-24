@@ -1,0 +1,9 @@
+#!/bin/bash
+
+scp -i /root/.ssh/id_maas -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no  curtin_packages/*.deb ubuntu@$1:/tmp
+scp -i /root/.ssh/id_maas -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no  curtin_packages/postfix.seed ubuntu@$1:/tmp
+ssh  -i /root/.ssh/id_maas -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no  ubuntu@$1 "sudo apt-get install debconf-utils -y"
+ssh  -i /root/.ssh/id_maas -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no  ubuntu@$1 "sudo debconf-set-selections /tmp/postfix.seed"
+ssh  -i /root/.ssh/id_maas -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no  ubuntu@$1 "sudo dpkg -i /tmp/*.deb"
+ssh  -i /root/.ssh/id_maas -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no  ubuntu@$1 "sudo apt-get -f install -y"
+
