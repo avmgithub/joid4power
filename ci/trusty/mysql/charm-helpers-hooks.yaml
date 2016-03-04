@@ -1,0 +1,12 @@
+branch: lp:charm-helpers
+destination: hooks/charmhelpers
+include:
+    - core
+    - cli
+    - fetch
+    - contrib.hahelpers.cluster
+    - contrib.peerstorage
+    - payload.execd
+    - contrib.network.ip
+    - contrib.database
+    - contrib.charmsupport

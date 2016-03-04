@@ -1,0 +1,26 @@
+name: percona-cluster
+summary: Percona XtraDB Cluster - Active/Active MySQL
+maintainer: OpenStack Charmers <openstack-charmers@lists.ubuntu.com>
+description: |
+  Percona XtraDB Cluster provides an active/active MySQL
+  compatible alternative implemented using the Galera
+  synchronous replication extensions.
+tags:
+  - databases
+provides:
+  db:
+    interface: mysql
+  db-admin:
+    interface: mysql-root
+  shared-db:
+    interface: mysql-shared
+  nrpe-external-master:
+    interface: nrpe-external-master
+    scope: container
+peers:
+  cluster:
+    interface: percona-cluster
+requires:
+  ha:
+    interface: hacluster
+    scope: container
