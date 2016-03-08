@@ -71,8 +71,8 @@ esac
 echo "... Deployment Started ...."
 case "$1" in
     'nonha' )
-        juju-deployer -vW -d -c bundles.yaml trusty-"$2"-nodes
-        juju-deployer -vW -d -c bundles.yaml trusty-"$2"
+        juju-deployer -vW -d -c bundles.yaml trusty-"$2"-nodes --local-mods
+        juju-deployer -vW -d -c bundles.yaml trusty-"$2" --local-mods
         ;;
     'ha' )
         juju-deployer -vW -d -c bundles.yaml trusty-"$2"-nodes
