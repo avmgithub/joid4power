@@ -22,12 +22,14 @@ git clone https://github.com/avmgithub/joid4power.git
 
 cd joid4power/ci
 
+Edit the maas/default/deployment.yaml file according to your environment. You can copy the maas/default/deployment.yaml.POWER example to maas/default/deployment.yaml and modify to your environment.
+
 Run the command
 ./02-maasdeploy.sh  virtinstall 2>&1 |tee my.log
 
 The above command line does the following:
 
-1. add repositories
+1. add repositories to to your local server
 2. download maas-deployer package
 3. apply patches to maas-deployer for specific OpenPOWER changes (this will not be needed once the patches get into the mainline)
 4. Create opnfv-maas, bootstrap VMs
@@ -35,6 +37,8 @@ The above command line does the following:
 7. Download specific OpenPOWER cloud images to maasserver
 8. Deploy 2 more VMs, node1-controller and node2-compute.
 9. Commission all VMs ready for deployment.
+
+This may take several minutes depending on your network connection for downloading images
 
 Note:
 If something fails, before re-running the 02-maasdeploy.sh script, run the ./cleanup script
