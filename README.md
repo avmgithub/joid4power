@@ -25,6 +25,7 @@ cd joid4power/ci
 Edit the maas/default/deployment.yaml file according to your environment. You can copy the maas/default/deployment.yaml.POWER example to maas/default/deployment.yaml and modify to your environment.
 
 Run the command
+
 ./02-maasdeploy.sh  virtinstall 2>&1 |tee my.log
 
 The above command line does the following:
@@ -50,11 +51,15 @@ Once the ./02-maasdeploy.sh script finishes you should have a MAAS deployed with
 **Installing Juju**
 
 cp environments.yaml ~/.juju/
+
 rm /root/.juju/environments/*
+
 ./00-bootstrap.sh
 
 Once this finishes check the Juju URL  https://<bootstrap VM IP>/   Login: admin/<password from /root/.juju/environments/demo-maas file
 
 **Installing Openstack**
+
 For Openstack deployment run:
+
 ./01-deploybundle.sh nonha liberty default
