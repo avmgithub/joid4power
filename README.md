@@ -27,16 +27,16 @@ Run the command
 
 The above command line does the following:
 
-1) add repositories
-2) download maas-deployer
-3) apply patches to maas-deployer for specific OpenPOWER changes (this will not be needed once the patches get into the mainline)
-4) Create opnfv-maas, bootstrap VMs
-5) Deploy maas to opnfv-maas
-6) Apply patches to maas for OpenPOWER specific changes (maas 1.9.1 should fix most if not all bugs in current maas version)
-7) Reboot maasserver
-8) Download specific OpenPOWER cloud images to maasserver
-9) Deploy 2 more VMs, node1-controller and node2-compute.
-10) Commission all VMs ready for deployment.
+1. add repositories
+2. download maas-deployer
+3. apply patches to maas-deployer for specific OpenPOWER changes (this will not be needed once the patches get into the mainline)
+4. Create opnfv-maas, bootstrap VMs
+5. Deploy maas to opnfv-maas
+6. Apply patches to maas for OpenPOWER specific changes (maas 1.9.1 should fix most if not all bugs in current maas version)
+7. Reboot maasserver
+8. Download specific OpenPOWER cloud images to maasserver
+9. Deploy 2 more VMs, node1-controller and node2-compute.
+10. Commission all VMs ready for deployment.
 
 Note:
 If something fails, before re-running the 02-maasdeploy.sh script, run the ./cleanup script
