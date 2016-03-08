@@ -8,7 +8,7 @@ virtinstall=0
 if [ ${arch} == 'ppc64le' ];
 then
     ppc64_cpu --smt=off
-    ./cleanvm.sh
+#    ./cleanvm.sh
 fi
 
 case "$1" in
@@ -70,15 +70,17 @@ sudo apt-get update -y
 
 if [ ${arch} == 'ppc64le' ];
 then
-    sudo apt-get install maas-deployer=0.0.5-0ubuntu0 -y
+    sudo apt-get install maas-deployer=0.0.6-0ubuntu0.1 -y
     ./apply_maas_patch.sh
     sudo apt-get install openssh-server git juju juju-deployer maas-cli python-pip -y
 else
     sudo apt-get install openssh-server git maas-deployer juju juju-deployer maas-cli python-pip -y
 fi
 
+
 sudo pip install shyaml
 juju init -f
+
 
 cat $HOME/.ssh/id_rsa.pub >> $HOME/.ssh/authorized_keys
 
@@ -172,9 +174,9 @@ fi
 #adding compute and control nodes VM to MAAS for deployment purpose.
 if [ "$virtinstall" -eq 1 ]; then
     # create two more VMs to do the deployment.
-    sudo virt-install --connect qemu:///system --name node1-control --ram 16384 --vcpus 16,maxvcpus=16,sockets=1,cores=1,threads=8 --cpuset=120,128 --video vga --arch ppc64 --disk size=120,format=qcow2,bus=virtio,io=native,pool=default --network bridge=brInt,model=virtio --network bridge=virbr0,model=virtio --boot network,hd,menu=off --noautoconsole --vnc --print-xml | tee node1-control
+    sudo virt-install --connect qemu:///system --name node1-control --ram 16384 --vcpus 16,maxvcpus=16,sockets=1,cores=2,threads=8 --cpuset=120,128 --video vga --arch ppc64 --disk size=120,format=qcow2,bus=virtio,io=native,pool=default --network bridge=brInt,model=virtio --network bridge=virbr0,model=virtio --boot network,hd,menu=off --noautoconsole --vnc --print-xml | tee node1-control
 
-    sudo virt-install --connect qemu:///system --name node2-compute --ram 16384 --vcpus 16,maxvcpus=16,sockets=1,cores=1,threads=8 --cpuset=136,144 --video vga --arch ppc64 --disk size=120,format=qcow2,bus=virtio,io=native,pool=default --network bridge=brInt,model=virtio --network bridge=virbr0,model=virtio --boot network,hd,menu=off --noautoconsole --vnc --print-xml | tee node2-compute
+    sudo virt-install --connect qemu:///system --name node2-compute --ram 16384 --vcpus 16,maxvcpus=16,sockets=1,cores=2,threads=8 --cpuset=136,144 --video vga --arch ppc64 --disk size=120,format=qcow2,bus=virtio,io=native,pool=default --network bridge=brInt,model=virtio --network bridge=virbr0,model=virtio --boot network,hd,menu=off --noautoconsole --vnc --print-xml | tee node2-compute
 
     node1controlmac=`grep  "mac address" node1-control | head -1 | cut -d "'" -f 2`
     node2computemac=`grep  "mac address" node2-compute | head -1 | cut -d "'" -f 2`
