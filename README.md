@@ -48,11 +48,11 @@ Once the ./02-maasdeploy.sh script finishes you should have a MAAS deployed with
 
 Installing Juju
 
-#cp environments.yaml ~/.juju/
-#rm /root/.juju/environments/*
-#./00-bootstrap.sh
+cp environments.yaml ~/.juju/
+rm /root/.juju/environments/*
+./00-bootstrap.sh
 
 Once this finishes check the Juju URL  https://<bootstrap VM IP>/   Login: admin/<password from /root/.juju/environments/demo-maas file
 
 For Openstack deployment run:
-#./01-deploybundle.sh nonha liberty default
+./01-deploybundle.sh nonha liberty default
