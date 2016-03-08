@@ -1,5 +1,5 @@
---- vm.py.ORG	2016-01-19 14:58:07.225207685 -0600
-+++ vm.py	2016-01-19 16:07:10.293504962 -0600
+--- /tmp/vm.py	2016-03-07 15:59:49.536540063 -0600
++++ vm.py	2016-03-08 14:39:38.661637008 -0600
 @@ -47,6 +47,7 @@
          self.memory = params.get('memory', 1024)
          self.pool = params.get('pool', 'default')
@@ -35,3 +35,13 @@
          url = url.format(release=self.release, arch=self.arch)
          f = url.split('/')[-1]
          return (url, f)
+@@ -450,7 +458,8 @@
+             'ssh_key': self._get_ssh_key(),
+             'apt_http_proxy': self.apt_http_proxy,
+             'apt_sources': self.apt_sources,
+-            'network_config': '\n'.join(etc_net_interfaces)
++            'network_config': '\n'.join(etc_net_interfaces),
++            'arch': self.arch
+         }
+         content = template.load('cloud-init.cfg', parms)
+         with open(base_file, 'w+') as f:

@@ -13,9 +13,36 @@ apply_maas_deployer_patches() {
 
 download_ppc64_images() {
    maas_ip=`grep " ip_address" deployment.yaml | cut -d " "  -f 10`
-   ssh -i /root/.ssh/id_maas -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ubuntu@${maas_ip} "sudo service maas-regiond restart; sudo service maas-clusterd restart"
    sleep 60
-   ./ppc64
+   maas maas boot-source-selection update 1 1 os=ubuntu release=trusty arches=ppc64el arches=amd64 subarches=hwe-v subarches=hwe-w 'labels=*'
+
+   sleep 20
+
+   maas maas boot-resources import
+   # get the value of id
+   id="$(maas maas boot-sources read | python -c 'import json,sys;obj=json.load(sys.stdin);print obj[0]["id"]')"
+
+   # find which has ppc64 boot selection
+   num_sources="$(maas maas boot-resources read | python -c 'import json,sys;obj=json.load(sys.stdin);print len(obj[0])')"
+
+   #echo $num_sources
+   let num_sources=$num_sources+1
+   #echo  $num_sources
+   for i in `seq 1 $num_sources`
+   do
+       maas maas boot-resource read $i | grep ppc64 > /dev/null
+       if [ $? -eq 0 ]
+       then
+         while true; do
+            maas maas boot-resource read $i  | grep complete | grep false> /dev/null
+            if [ $? -eq 1 ]; then
+                break
+            fi
+            sleep 2
+            echo -n "."
+          done
+       fi
+   done
    ./wait4images.py
    sleep 60
 }

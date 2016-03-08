@@ -1,10 +1,12 @@
---- cloud-init.cfg.ORG	2016-01-20 15:56:17.470349615 -0600
-+++ cloud-init.cfg	2016-01-20 15:56:33.290353570 -0600
-@@ -43,7 +43,6 @@
+--- /tmp/cloud-init.cfg	2016-03-07 16:01:27.136556496 -0600
++++ cloud-init.cfg	2016-03-08 07:24:36.747603914 -0600
+@@ -43,7 +43,9 @@
    - maas-dns
    # Used to manage KVM instances via libvirt
    - libvirt-bin
--  - linux-image-extra-virtual
++{% if arch != 'ppc64' %}
+   - linux-image-extra-virtual
++{% endif %}
    - jq
    - juju-core
    - juju-deployer
