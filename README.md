@@ -25,27 +25,19 @@ cd joid4power/ci
 Run the command
 ./02-maasdeploy.sh  virtinstall 2>&1 |tee my.log
 
-You may get some errors on your first run because some files for the 
-maas-deployer package may not have been patched yet.  See patch1.txt,
-patch2.txt and patch3.txt
+That above command line does the following:
 
-They have to be applied to the following files:
+1) add repositories
+2) download maas-deployer
+3) apply patches to maas-deployer for specific OpenPOWER changes (this will not be needed once the patches get into the mainline)
+4) Create opnfv-maas, bootstrap VMs
+5) Deploy maas to opnfv-maas
+6) Apply patches to maas for OpenPOWER specific changes (maas 1.9.1 should fix most if not all bugs in current maas version)
+7) Reboot maasserver
+8) Download specific OpenPOWER cloud images to maasserver
+9) Deploy 2 more VMs, node1-controller and node2-compute.
+10) Commission all VMs ready for deployment.
 
-```
-/usr/lib/python2.7/dist-packages/maas_deployer/vmaas/vm.py 
-/usr/lib/python2.7/dist-packages/maas_deployer/vmaas/engine.py 
-/usr/lib/python2.7/dist-packages/maas_deployer/vmaas/templates/cloud-init.cfg
-```
-```
-cp patch1.txt /usr/lib/python2.7/dist-packages/maas_deployer/vmaas
-cp patch3.txt /usr/lib/python2.7/dist-packages/maas_deployer/vmaas
-cp patch2.txt /usr/lib/python2.7/dist-packages/maas_deployer/vmaas/templates
-```
-```
-cd /usr/lib/python2.7/dist-packages/maas_deployer/vmaas
-patch < patch1.txt
-patch < patch3.txt
-cd /usr/lib/python2.7/dist-packages/maas_deployer/vmaas/templates
-patch < patch2.txt
-```
-Before re-running the 02-maasdeploy.sh script, run the ./cleanup script
+Note:
+If something fails, before re-running the 02-maasdeploy.sh script, run the ./cleanup script
+
