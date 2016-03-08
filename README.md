@@ -39,6 +39,20 @@ The above command line does the following:
 9. Commission all VMs ready for deployment.
 
 This may take several minutes depending on your network connection for downloading images
+Check the MAAS URL http://<maas IP>/MAAS.  Login ubuntu/ubuntu
 
 Note:
 If something fails, before re-running the 02-maasdeploy.sh script, run the ./cleanup script
+
+Once the ./02-maasdeploy.sh script finishes you should have a MAAS deployed with 3 VMs (bootstrap, node1-controller and node2-compute).  Proceed to install Juju.
+
+Installing Juju
+
+#cp environments.yaml ~/.juju/
+#rm /root/.juju/environments/*
+#./00-bootstrap.sh
+
+Once this finishes check the Juju URL  https://<bootstrap VM IP>/   Login: admin/<password from /root/.juju/environments/demo-maas file
+
+For Openstack deployment run:
+#./01-deploybundle.sh nonha liberty default
