@@ -7,8 +7,7 @@ virtinstall=0
 
 if [ ${arch} == 'ppc64le' ];
 then
-    ppc64_cpu --smt=off
-#    ./cleanvm.sh
+    ./power_specific.sh turn_off_smt
 fi
 
 case "$1" in
@@ -70,9 +69,7 @@ sudo apt-get update -y
 
 if [ ${arch} == 'ppc64le' ];
 then
-    sudo apt-get install maas-deployer=0.0.6-0ubuntu0.1 -y
-    ./apply_maas_patch.sh
-    sudo apt-get install openssh-server git juju juju-deployer maas-cli python-pip -y
+    ./power_specific.sh apply_maas_deployer_patches
 else
     sudo apt-get install openssh-server git maas-deployer juju juju-deployer maas-cli python-pip -y
 fi
@@ -142,16 +139,6 @@ sudo chown $USER:$USER environments.yaml
 
 echo "... Deployment of maas finish ...."
 
-if [ ${arch} == 'ppc64le' ];
-then
-    echo "...Patching maas for POWER ...."
-    maas_ip=`grep " ip_address" deployment.yaml | cut -d " "  -f 10`
-    ./install_curtin_packages ${maas_ip}
-    scp -r -i /root/.ssh/id_maas -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no  maasserver_patches ubuntu@${maas_ip}:/tmp
-    ssh -i /root/.ssh/id_maas -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ubuntu@${maas_ip} "cd /tmp/maasserver_patches; sudo ./maasserver_patches.sh"
-fi
-
-
 maas_ip=`grep " ip_address" deployment.yaml | cut -d " "  -f 10`
 apikey=`grep maas-oauth: environments.yaml | cut -d "'" -f 2`
 maas login maas http://${maas_ip}/MAAS/api/1.0 ${apikey}
@@ -163,12 +150,7 @@ maas maas sshkeys new key="`cat $HOME/.ssh/id_rsa.pub`"
 
 if [ ${arch} == 'ppc64le' ];
 then
-   maas_ip=`grep " ip_address" deployment.yaml | cut -d " "  -f 10`
-   ssh -i /root/.ssh/id_maas -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ubuntu@${maas_ip} "sudo service maas-regiond restart; sudo service maas-clusterd restart"
-   sleep 60
-   ./ppc64
-   ./wait4images.py
-   sleep 60
+    ./power_specific.sh download_ppc64_images
 fi
 
 #adding compute and control nodes VM to MAAS for deployment purpose.
@@ -228,9 +210,7 @@ esac
 
 if [ ${arch} == 'ppc64le' ];
 then
-    maas_ip=`grep " ip_address" deployment.yaml | cut -d " "  -f 10`
-    qemu_uri=`grep qemu deployment.yaml  | awk '{print $2}'`
-    ./update_maas_ppc64 ${qemu_uri}
+    ./power_specific.sh update_maas_ppc64
 fi
 
 echo " .... MAAS deployment finished successfully ...."
